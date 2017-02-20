@@ -178,7 +178,7 @@ shinyServer(function(input, output, session) {
         categories_top <- names(categories_table_sorted)
         relevant_data <- subset(relevant_data, categories %in% categories_top[1:6])
                      
-        crime_barplot <- ggplot(data = relevant_data) + ggtitle(paste("Police calls around", isolate(input$address), "in", isolate(input$year))) # basic plot + title
+        crime_barplot <- ggplot(data = relevant_data) + ggtitle(paste("Crimes reported around", isolate(input$address), "in", isolate(input$year))) # basic plot + title
         # Arrange variables in the barplot according to user-selected facets
         # http://www.cookbook-r.com/Graphs/Facets_(ggplot2)/ 
         # http://www.sthda.com/english/wiki/ggplot2-legend-easy-steps-to-change-the-position-and-the-appearance-of-a-graph-legend-in-r-software

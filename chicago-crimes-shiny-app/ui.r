@@ -8,7 +8,7 @@ crimes_vector <- c("ARSON" = "ARSON", "ASSAULT" = "ASSAULT", "BATTERY" = "BATTER
                   "NARCOTICS" = "NARCOTICS", "OBSCENITY" = "OBSCENITY", "OFFENSE INVOLVING CHILDREN" = "OFFENSE INVOLVING CHILDREN", "OTHER OFFENSE" = "OTHER OFFENSE",
                   "PROSTITUTION" = "PROSTITUTION", "PUBLIC INDECENCY" = "PUBLIC INDECENCY", "PUBLIC PEACE VIOLATION" = "PUBLIC PEACE VIOLATION", "ROBBERY" = "ROBBERY",
                   "SEX OFFENSE" = "SEX OFFENSE", "STALKING" = "STALKING", "THEFT" = "THEFT", "WEAPONS VIOLATION" = "WEAPONS VIOLATION")
-crimes_checked <- c("ASSAULT", "BATTERY", "BURGLARY", "CRIM SEXUAL ASSAULT", "CRIMINAL DAMAGE", "CRIMINAL TRESPASS", "HOMICIDE", "INTIMIDATION",
+crimes_checked <- c("ASSAULT", "BATTERY", "BURGLARY", "CRIM SEXUAL ASSAULT", "CRIMINAL DAMAGE", "CRIMINAL TRESPASS", "HOMICIDE", "INTERFERENCE WITH PUBLIC OFFICER", "INTIMIDATION",
                     "KIDNAPPING", "MOTOR VEHICLE THEFT", "NARCOTICS", "OFFENSE INVOLVING CHILDREN", "PUBLIC PEACE VIOLATION", "ROBBERY",
                     "SEX OFFENSE", "STALKING", "THEFT", "WEAPONS VIOLATION")
 days_vector <- c("Sunday" = "Sunday", "Monday" = "Monday", "Tuesday" = "Tuesday", "Wednesday" = "Wednesday", "Thursday" = "Thursday", "Friday" = "Friday", "Saturday" = "Saturday")
@@ -24,7 +24,7 @@ locations_vector <- c("Congress Pkwy and State St, Chicago", "N Ashland Ave and 
                       "Illinois Institute of Technology, Chicago", "University of Illinois at Chicago, Chicago", "Chicago State University, Chicago",
                       "Northeastern illinois University, Chicago", "N Mason Ave and N Northwest Hwy, Chicago", "N Austin Ave and W Irving Park Rd, Chicago",
                       "W Irving Park Rd and N Pulaski Rd, Chicago", "W Irving Park Rd and N Damen Ave, Chicago", "N Cicero Ave and W North Ave, Chicago",
-                      "Wrigley Field, Chicago", "Guarantee Rate Field, Chicago", "North Lawndale, Chicago")
+                      "Wrigley Field, Chicago", "Guarantee Rate Field, Chicago", "North Lawndale, Chicago", "Washington Park, Chicago")
 
 shinyUI(fluidPage(
   titlePanel(h3("Chicago Crime Map"), windowTitle = "Chicago Crime Map"),
