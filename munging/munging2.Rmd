@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Conflating some of the crimes categories into others, as some happen very rarely and take space in the UI
+
+Loading libraries we plan on using
+```{r}
+library(chron) # for dealing with chronological objects
+library(magrittr) # pipe operator
+library(plyr) # rename
+library(readr)# read_csv(), ~3x faster than read.csv()
+```
+
+Read the file created with munging1.Rmd
+```{r}
+start <- Sys.time()
+chicago_crimes <- read_csv("chicago_crimes.csv")
+chicago_crimes$categories %>% table() %>% sort()
+Sys.time() - start
+```
+
+We can see only ONE case of Domestic Violence (?) so I will conflate it into "OTHER OFFENSE". We can do similarly with the "NON-CRIMINAL" catgories (3 of them), as well as the "RITUALISM" and "CONCEALED CARRY LICENSE VIOLATION" categories. The "OTHER NARCOTIC VALUATION" can be conflated with "NARCOTICS".
+
+```{r}
+chicago_crimes[chicago_crimes$categories == "DOMESTIC VIOLENCE",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "NON-CRIMINAL (SUBJECT SPECIFIED)",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "NON - CRIMINAL",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "NON-CRIMINAL",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "RITUALISM",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "CONCEALED CARRY LICENSE VIOLATION",]$categories <- "OTHER OFFENSE"
+chicago_crimes[chicago_crimes$categories == "OTHER NARCOTIC VIOLATION",]$categories <- "NARCOTICS"
+
+#Check:
+chicago_crimes$categories %>% table() %>% sort()
+```
+
+Write to file:
+```{r}
+write_csv(chicago_crimes, "chicago_crimes_2017_0220.csv")
+```
+
+Write the files
+```{r}
+start <- Sys.time()
+for(year in c(2001:2017)) {
+  crimes <- chicago_crimes[chicago_crimes$year == as.character(year),]
+  write_csv(as.data.frame(crimes), paste("crimes_", as.character(year), ".csv", sep=""))
+}
+Sys.time() - start
+```

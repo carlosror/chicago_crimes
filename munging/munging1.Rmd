@@ -1,0 +1,79 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Doing almost everything in one file and skipping the replacing some of the most frequent missing coordinates since the file is so large.
+
+Loading libraries we plan on using
+```{r}
+library(chron) # for dealing with chronological objects
+library(magrittr) # pipe operator
+library(plyr) # rename
+library(readr)# read_csv(), ~3x faster than read.csv()
+```
+
+
+```{r}
+start <- Sys.time()
+chicago_crimes <- read_csv("Crimes_-_2001_to_present.csv")
+Sys.time() - start
+```
+
+Remove some columns we will not be using
+```{r}
+chicago_crimes$Beat <- NULL
+chicago_crimes$District <- NULL
+chicago_crimes$Ward <- NULL
+chicago_crimes$IUCR <- NULL
+chicago_crimes$`Community Area` <- NULL
+chicago_crimes$`FBI Code` <- NULL
+chicago_crimes$`X Coordinate` <- NULL
+chicago_crimes$`Y Coordinate` <- NULL
+chicago_crimes$`Updated On` <- NULL
+chicago_crimes$Location <- NULL
+chicago_crimes$Domestic <- NULL
+chicago_crimes$`Location Description` <- NULL
+
+#Rename a few columns with shorter names so that they match names
+#I had used before.
+chicago_crimes <- rename(chicago_crimes, replace = c("Primary Type" = "categories"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Description" = "description"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Case Number" = "case_number"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Year" = "year"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Latitude" = "latitude"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Longitude" = "longitude"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Block" = "address"))
+chicago_crimes <- rename(chicago_crimes, replace = c("Date" = "date"))
+```
+
+Dealing with times and dates:
+
+```{r}
+start <- Sys.time()
+#Get the dates of incidents
+chicago_crimes_dates <- substr(chicago_crimes$date, 1, 10) %>% dates() %>% as.Date("%m/%d/%y")
+#Create new column consisting of days of week incidents took place
+chicago_crimes$days <- weekdays(chicago_crimes_dates) # vector of "Wednesday" , "Saturday", ...
+
+#Get the times, in 24-hour format, the incidents took place
+#Using strptime() per this S.O. post:
+#http://stackoverflow.com/questions/29833538/convert-12-hour-character-time-to-24-hour
+chicago_crimes_times <- substr(chicago_crimes$date, 12,22) %>% strptime("%I:%M:%S %p") %>% format(format = "%H:%M:%S") %>% times()
+#Create new column consisting of hour of day incidents took place
+chicago_crimes_hours <- hours(chicago_crimes_times)
+
+#Create a new column consisting of time period incidnts took place
+# Determine periods as follows:
+# Early Morning (before 6 AM): 0, Morning (between 6 AM and 12 PM): 1
+# Afternoon (between noon and 6 PM): 2, Evening (between 6 PM and midnight): 3
+hours_to_periods <- function(hour) {if (hour %/% 6 == 0) "early_morning" else if (hour %/% 6 == 1) "morning" else if (hour %/% 6 == 2) "afternoon" else "evening"}
+chicago_crimes$periods <- sapply(chicago_crimes_hours, hours_to_periods)
+Sys.time() - start
+```
+
+Write to file:
+```{r}
+write_csv(chicago_crimes, "chicago_crimes.csv")
+```
+
