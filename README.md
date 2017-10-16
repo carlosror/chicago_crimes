@@ -1,4 +1,4 @@
-###URL
+### URL
 https://carlosgg.shinyapps.io/chicago-crimes-map/
 
 ### Motivation
@@ -10,7 +10,7 @@ I wanted to be able to enter a Chicago address or landmark and get a plot of cri
 
 [R](https://leanpub.com/rprogramming), [R Studio](https://www.rstudio.com/), [Shiny R server](http://shiny.rstudio.com/articles/), [Leaflet for R](http://rstudio.github.io/leaflet/), [ggmap](https://journal.r-project.org/archive/2013-1/kahle-wickham.pdf).
 
-###Data source
+### Data source
 
 The crime data was obtained from the [City of Chicago Data Portal](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2/data)
 
